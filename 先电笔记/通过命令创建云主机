@@ -1,0 +1,8 @@
+启动环境变量：source /etc/keystone/admin-openrc.sh
+创建类型：nova flavor-create f1 1234 1024 10 1
+创建外网：openstack network create extnet --external --provider-physical-network provider --provider-network-type flat
+创建ip(172.18.x.0/24(x是考生号),网关为172.18.x.1)：openstack subnet create extsubnet --gateway 192.168.200.2 --subnet-range 192.168.200.0/24 --network extnet
+创建内网：openstack network create intnet --internal --provider-network-type vxlan
+创建ip(10.10.x.0/24(x是考生号),网关为10.1.x.1)：openstack subnet create --subnet-range 10.10.1.0/24 --gateway 10.10.1.1 --network intnet intsubnet
+添加路由：openstack router create ext-router
+连接内网：openstack router set ext-router --external

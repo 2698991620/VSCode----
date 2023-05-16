@@ -1,0 +1,54 @@
+脚本安装数据库服务：
+    # Controller节点
+    执行脚本iaas-install-mysql.sh进行安装
+keystone服务：
+    # Controller节点
+    iaas-install-keystone.sh脚本安装
+    创建数据库：
+    # mysql –u root -p（此处数据库密码为之前安装Mysql设置的密码）
+    mysql> CREATE DATABASE keystone;
+    mysql> GRANT ALL PRIVILEGES ON keystone.* TO 'keystone'@'localhost'  IDENTIFIED BY  'KEYSTONE_DBPASS';
+    mysql> GRANT ALL PRIVILEGES ON keystone.* TO 'keystone'@'%'  IDENTIFIED BY  'KEYSTONE_DBPASS';
+    mysql> exit
+glance服务：
+    # Controller 节点
+    执行脚本iaas-install-glance.sh进行安装
+    查看镜像：
+        glance image-list
+    查看创建镜像的帮助：
+        glance help image-create
+    删除镜像：
+        glance image-delete 镜像ID
+    创建镜像：
+    glance image-create --name cirros --disk-format qcow2 --container-format bare --file /opt/openstack/images/CentOS_7.2_x86_64_XD.qcow2 --progress
+nova服务：
+    #Controller节点
+    执行脚本iaas-install-nova-controller.sh进行安装
+    #Compute节点
+    执行脚本iaas-install-nova-compute.sh进行安装
+Neutron服务运维：
+    #Controller节点
+    执行脚本iaas-install-neutron-controller.sh进行安装
+    #Compute节点
+    执行脚本iaas-install-neutron-compute.sh进行安装
+    查询网络服务 DHCP agent 的详细信息：
+        neutron agent-list
+    Neutron 查询：
+        查询网络服务的列表信息中的“host”一列
+        neutron agent-list -c host
+        查询网络服务的列表信息中的“host”和“binary”一列
+        neutron agent-list -c host -c binary
+    查询网络详情：
+        neutron net-list
+        查询子网的状态：
+        neutron subnet-list
+安装Dashboard服务：
+    #Controller
+    执行脚本iaas-install-dashboard.sh进行安装
+    #yum install openstack-dashboard  –y
+安装Cinder块存储服务：
+    #Controller
+    执行脚本iaas-install-cinder-controller.sh进行安装
+    #Compute节点
+    执行脚本iaas-install-cinder-compute.sh进行安装
+    yum install openstack-cinder

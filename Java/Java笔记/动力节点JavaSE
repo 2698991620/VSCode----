@@ -1,0 +1,572 @@
+day01
+DOS命令：
+	*exit 退出当前命令窗口
+	*cls 清除
+	*复制内容：右键--标记--左键选中--右键    选中--右键--右键(粘贴)
+	*dir  列出当前目录下所有的子文件/子目录    Desktop桌面
+	*cd  命令：
+		cd命令表示改变目录：change directory[改变目录]
+		cd命令怎么用？
+			cd目录的路径
+		但是路径包括绝对路径和相对路径
+		绝对路径：表示该路径从某个磁盘的盘符下作为出发点的路径
+		相对路径：表示该路径从当前所在的路径下作为出发点的路径
+	*cd.. 回到上级目录
+	*cd\ 直接回到根目录
+	*切换盘符：c:回车
+注释：
+	//单行注释
+	/*……*/多行注释
+	/**……*/javadoc注释
+//public表示一个公开的
+//class表示定义一个类
+//HelloWorld表示一个类名
+public class HelloWorld{//表示定义一个公开的类，起名HelloWorld
+		//类体中不允许直接编写java语句(除了声明变量之外)
+		/*
+		public表示公开的
+		static表示静态的
+		void表示空
+		main表示方法名是main
+		(String[] args)是一个main方法的形式参数列表
+		*/
+		public static void main(String[] args){//表示定义一个公开的静态的主方法
+			System.out.println("Hello World!")
+		}
+	
+	}
+public class和class的区别：
+	*一个Java源文件当中可以定义多个class
+	*一个Java源文件当中public的class不是必须的
+	*一个class会定义生成一个xxx.class字节码文件
+	*一个Java源文件当中定义公开的类的话，只能有一个，并且该类名称必须和Java源文件名称一致。
+	*每一个class当中都可以编写main方法，都可以设定程序的入口，向执行B.class中的main方法：Java B,像执行x.class当中的main方法：java x
+	*注意：当在命令窗口中执行java Hello，那么要求Hello.class当中必须有主方法。没有主方法会出现运行错误
+标识符
+	1.什么是标识符?
+		在Java源程序当中凡是程序员有权利自己命名的单词都是标识符
+		标识符在EditPlus编辑器当中以黑色字体高亮显示
+		标识符可以识别什么元素呢?
+			类名
+			方法名
+			变量名
+			接口名
+			常量名
+    2.标识符的命名规则?【不按照这个规则来，编译器就会报错，这是语法】
+        一个合格的标识符只能由数字、字母、下划线、美元符号组成，不能包含其他符号
+        不能数字开头
+        严格区分大小写
+        关键字不能做标识符
+        理论上无长度限制，但是最好不要太长
+    3.标识符的命名规则?【只是一种规范，不属于语法，不遵守规范编译器不会报错
+        最好见名知意
+        遵守驼峰命名方式
+        类名、接口名：首字母大写，后面每个单词首字母大写。
+        变量名、方法名：首字母小写，后面每个单词首字母大写。
+        常量名：全部大写
+public class A{//A是一个类名，名字可以修改
+    //mains是一个方法名
+    public static void main(String[] args){//args是一个变量名
+
+    }
+}
+字面值：
+	10、100  整数型字面值
+	3.14  浮点型字面值
+	"abc"  字符串型字面值
+	"a"  字符型字面
+	true、fasle  布尔型字面值
+	字符串型字面值双引号，字符型字面值单引号
+	变量包含三部分：数据类型、名称、字面值[数据]
+变量：
+	一行上可以同时声明多个变量
+	int a,b,c=300;//c=300,a和b未赋值
+	通常访问一个变量包括两种访问形式：
+		第一种：读取变量中保存的具体数据 get/获取
+		第二种：修改变量中保存的具体数据 set/设置
+		i =20;//set
+		System.out.println(i);//get
+变量的作用域
+	出了大括号就不认识了
+	for循环中定义的变量出了for循环内存就释放了，无法访问
+	for循环外定义的变量出了for循环依旧可以使用
+关于变量的分类：
+	根据变量声明的位置来分类：
+		局部变量
+			在方法体当中声明的变量叫做局部变量
+		成员变量
+			在方法体外(类体之内)声明的变量叫做成员变量
+	//在不同的作用域当中，变量名时可以相同的
+	//在同一个作用域当中，变量名不能重名
+public class Test{
+	//成员变量
+	int k=200;
+	//主方法：入口
+	public static void main(String[] args){
+		//i变量就是局部变量
+		int i=10;
+		//Java遵循就近原则
+		System.out.println(i)
+	}
+	//成员变量
+	int i=100;//声明变量
+	//类体中不能直接编写Java语句，除了声明变量之外
+	//System.out.println(i)
+	//doSome方法
+	public static void doSome(){
+		//局部变量
+		int i=90;
+	}
+}
+数据类型
+	数据类型的作用：
+		知道jvm虚拟机在运行程序的时候给该数据分配内存空间、
+	八种基本类型的默认值：
+		byte,short,int,long    0
+		float,double    0.0
+		boolean      false(0)
+		char        \u0000
+public class Test{
+	//这里的static必须加
+	static int K=1000;
+	static int f;//成员变量，默认为0
+	public static void main(String[] args){
+		/*int i;//局部变量，不能没有值
+		System.out.println(i);*/
+		System.out.println(k);
+		System.out.println(f);//0
+	}
+}
+jdk中自带的native2ascii.exe命令，可以将文字转换成unicode编码
+char a='\u4e2d';-->中
+整形
+	整形字面值一般int类型，如果当long类型来处理的话，需要在数字后面添加l/L,建议使用大写L
+	八进制整数需要0开始
+	十六进制整数需要0x开始
+	输出是以十进制输出
+	long z=2147483648//2147483648是int类型数据，超过了int类型的取值范围，不能赋值给long类型的z
+	long z=2147483648L//将2147483648转化为long类型的数据
+	long x=100L;
+	//int y=x;//大数据类型转换为小数据类型，需要强制类型转换
+	强制类型转换可能会造成精度损失
+	强制类型转换原理：
+	原始数据：00000000 00000000 00000000 00000000 00000000 00000000 00000000 01100100
+	强转换后的数据：00000000 00000000 00000000 01100100
+	将左边的二进制砍掉(所有强转的原理)
+	int y=(int)x;
+	long k=2147483648L
+	int e=(int)k
+	10000000 00000000 00000000 00000000补码需要换转成原码
+	输出结果：-2147483648
+	字面值没有超过byte取值范围的话，可以直接赋值，超过的话需要将字面值进行强制类型转换
+	long类型的数据赋值给int类型的变量，需要类型转换
+	计算机只能存储补码形式
+	计算机二进制有三种表示形式：
+		原码
+		反码
+		补码
+	计算机在任何情况下底层表示和存储数据的时候采用了补码形式。
+	整数的补码：和原码相同
+	负数的补码：负数的绝对值对应的二进制编码所有二进制位取反，再加1
+	补码：10000000
+	原码计算过程：
+		10000000 - 1 --> 01111111
+		10000000 --> 128
+		-128
+	198
+	原始数据：00000000 00000000 00000000 11000110
+	强制类型转换之后：11000110
+	11000110现在在计算机当中存储，它是一个补码，将补码转换成原码就是该数字：
+	11000110 - 1 -->11000101
+	00111010 [2+8+16+32]-->58
+	-58
+	short s=32767;//通过
+	short s=32768;//编译报错
+	char cc=65535;//通过
+	char cc=65536;/编译报错
+	当一个整数字面值没有超出byte，short，char的取值范围，这个字面值可以直接赋给byte，short，char类型的变量。这种机制SUN允许了，目的是为了方便程序员的编程
+浮点数据类型：
+	float单精度[4个字节]
+	double双精度[8个字节，精度较高]
+	double的精度太低[相对来说]，不适合做财务软件。财务涉及到钱的问题，要求精度较高，所以SUN在基础SE类当中位程序员准备了精确度更高的类型，只不过这种类型是一种引用数据表类型，不属于基本数据类型，它是java.math.BingDecumal
+	其实java程序中SUN提供了一套庞大的类库，java程序员是基于这套基础的类库来进行开发的。所以要知道Java的SE类库的字节码在哪
+		SE类库字节码：C:\Program Flies (x86)\Java\jdkl1.7.0_75\jre\bin\rt.jar
+		SE类库字节码：C:\Program Flies (x86)\Java\jdkl1.7.0_75\src.zip
+	例如：String.java和String.class
+	我们的(String[] args)中的String使用的就是String.class字节码文件
+	在Java语言当中，所有的浮点型字面值[3.0]，默认被当作double类型来处理，要想该字面值当作float类型来处理，需要在字面值后面添加F/f
+	注意：
+		double和float在计算机内部二进制存储的时候存储的都是近似值。
+		在现实世界当中有一些数字是无限循环的，例如3.333333333...
+		计算机的资源是有限的，用有限的资源存储无限的数据只能存储近似值。
+	//3.0是double类型的字面值
+	//d是double类型的变量
+	//不存在类型转换
+	double d=3.0;
+	System.out.println(d);
+	//5.1是double类型的字面值
+	//f是float类型的变量
+	//大容器转换为小容器需要加强制类型转换符，所以一下程序编译错误。
+	//float f=5.1;
+	//解决方案：
+	//第一种方式：强制类型转换
+	//float f =(float)5.1;
+	//第二种方式：没有类型转换
+	float f=5.1f;
+布尔类型：
+	boolean
+	在Java语言当中boolean类型只有两个值：true、false，没有其他值。
+	不像c语言当中，0和1可以表示假和真。
+	在底层存储的时候boolean类型占1个字节，因为实际存储的时候false底层是0，true底层是1、
+	布尔类型在实际开发当中非常重要，经常使用在逻辑运算和条件控制语句当中。
+	//编译错误：不兼容的类型
+	//boolean flag=1;
+	//boolean loginSuccess=false;
+	//if语句以后讲[条件控制语句]
+	if(loginSuccess){
+		System.out.println("恭喜你，登陆成功");
+	}else{
+		System.out.println("对不起，用户名不存在或密码错误！");
+	}
+类型转换：
+	关于基本数据类型之间的互相转换：转换规则
+		1.八种基本类型当中不了布尔类型之外剩下的7中类型之间都可以胡互相转换
+		2.小容量向大容量转换，称为自动类型转换，容量从小到大排序：
+			byte < short < int < long < float < double < char
+			注：
+				任何浮点类型不管占用多少字节，都比整数型容量大。
+				char和short可表示的种类数量相同，但是char可以去更大的正整数
+		3.大容量转换成小容量，叫做强制类型转换，需要加强制类型转换符，程序才能编译通过，但是在运行阶段可能会损失精度，所以谨慎使用。
+		4.当整形字面值没有超出byte，short，char的取值范围，可以直接赋值给byte，short，char类型的变量
+		5.byte，short，char混合运算的时候，各自先转换成int类型再做运算。
+		6.多种数据类型混合运算，先转换成容量最大的那种类型再做运算。
+		注意：
+			byte b=3;可以编译通过,3没有超出byte类型取值范围
+			int i=10;
+			byte b=i/3;编译报错，编译器只检查语法，不会"运算"i/3
+		double dd=10/3;//3.0-->10是int类型，先算10/3，再进行数据类型转换
+运算符：
+	算术运算符
+		+ 求和
+		- 相减
+		* 乘积
+		/ 商
+		% 求余数[取模]
+
+		++ 自加1
+		-- 自减1
+		//++运算符可以出现在变量前，也可以出现在变量后
+		//++出现在变量后：先做赋值运算，再对变量中保存的值进行自加1
+		//++出现在变量前：先进行自加1运算，然后再进行赋值操作
+	关系运算符
+	逻辑运算符
+	赋值运算符
+	byte b=10;
+	b=b+5;//报错，类型不一样
+	b+=5;//没错，b=(byte)(b+5)
+	long =10L;
+	int y=20;
+	y+=x;//等同于：y=(int)(y+x);不改变数据类型
+三元运算符
+	1.语法规则：
+		布尔表达式 ? 表达式1:表达式2
+		布尔表达式为true时：执行表达式1，false时：执行表达式2
+条件控制语句
+	if(判断条件)
+		执行条件//如果条件为true，执行语句
+switch语句
+	switch(){
+		case int或String类型的字面值或变量:
+		java语句;
+	}
+	JDK7之后的版本在内，引入新特性，switch关键字和case关键字后面可以探测int后String类型的数据。
+
+	int i=10;
+	switch(i){
+		case1:case2:case3:
+			Sysout()
+	}
+for
+	for(初始化表达式;布尔表达式;更新表达式){}
+	初始化表达式、布尔表达式、更新表达式这是都不是必须的！(但是两个分号是必须的)
+while
+	while(true){
+		Sysout(1);
+	}
+	sysout(2);//报错，编译器检测到该程序永远都无法执行，所以编译器报错
+	int i=10;
+	while(i>0){
+		Sysout(i--);//10,9,8,7,6,5,4,3,2,1
+		sysout(i);//9,8,7,6,5,4,3,2,1,0
+	}
+	int j=0;
+	while(j>=0){
+		sysout(--k);//9,8,7,6,5,4,3,2,1,0,-1
+	}
+	在默认情况下：break语句终止的是离它最近的循环语句。当然也可以指定终止某个循环，需要给循环起名，采用这种语法：break 循环名称;
+	for1:for (int i = 0; i < 5; i++) {
+		for2:for (int j = 0; j < 10; j++) {
+			if(j==5){
+				break for1;//终止for1循环
+			}
+		}
+		System.out.println(12344);
+	}
+continue
+	continue表示：继续/go on/下一个
+	continue也有这样的语法：
+		continue 循环名称;[作为了解内容]
+素数判断：
+	int i=7;
+	boolean isSuShu =true;//默认是素数[标记在开发中比较常用]
+	for(int j=2;j<i;j++){
+		//j是什么：2,3,4,5,6
+		if (i%j==0) {
+			//非素数
+			isSuShu=false;
+			//已经知道i是非素数，跳出循环，提高效率
+			break;
+		}
+	}
+	sysout(isSuShu?i+"是素数":i+"不是素数")；
+	//一百以内素数
+	for (int i = 2; i <=100; i++) {
+		boolean b=true;
+		for (int j = 2; j <i; j++) {
+			if (i%j==0) {
+				b=false;
+				break;
+			}
+		}
+		if (b) {
+			System.out.println(i);
+		}
+	}
+	一百以内素数判断八个换一行
+	int count=0;
+	for (int i = 2; i <=100; i++) {
+		boolean b=true;
+		for (int j = 2; j <i; j++) {
+			if (i%j==0) {
+				b=false;
+				break;
+			}
+		}
+		if (b) {
+			System.out.println(i);
+			count++;
+			if(count%8==0){
+				sysout()
+			}
+		}
+	}
+方法
+	//计算和的方法
+	public static void sumInt(int a,int b){
+		int c=a+b;
+		sysout(a+"+"+b+"="+c)
+	}
+	//方法调用
+	main{
+		类名称.sumInt(10,20);
+	}
+	方法的定义：，语法结构：
+		[修饰符列表] 返回值类型 方法名(参数列表){方法体}
+	关于修饰符列表
+		可选项，不是必须的
+		目前统一写成：public static
+		方法的修饰符列表当中有static关键字的话，怎么调用这个方法？
+			类名.方法名(实际参数列表);
+		返回值类型是void的时候，在方法体当中不能编写"return 值"这样的语句，但是可以编写"return"这样的语句
+	public表示公开的
+	class表示定义一个类
+	static表示静态的
+	void表示方法执行结束后不返回任何数据
+	main是方法名：主方法
+	(String[] args):形式参数列表，其中String[]是一种引用数据类型，args是一个局部变量的变量名
+	所以main方法中只有args这个局部变量的变量名是随意的
+	主方法就需要这样固定编写，这是程序的入口。[sun规定的，必须这么写]
+	public static void main(String[] args) {}
+	//调用方法
+	//如果在本类(TEst)中的(静态)方法
+	Test.m();//调用m方法
+	km();//调用m方法，同一类的静态方法的调用可以省略类名称
+	return语句后不能放执行语句，会编译报错，因为return后的语句永远不会执行
+	public static int m(){
+		return 10>3?1:0;
+	}
+	return终止的不是循环语句，终止的是方法
+方法的内存分配
+	方法在执行的过程中，在JVM中的内存是如何分配的呢，内存是如何变化的？
+		1.方法只定定义不调用，是不会执行的，并且在JVM中也不会给该方法分配"运行所属"的内存空间。只有在调用这个方法的时候，才会动态的给这个方法分配所属的内存空间
+		2.在JVm内存划分上由这样三块主要的内存空间(当然除了这三块之外还有其他的内存空间)：
+			方法区内存
+			堆内存
+			栈内存
+		3.关于栈数据结构：
+			栈：stack，是一种数据结构
+			数据结构反映的是数据的存储形态。
+			数据结构是独立的学科，不属于任何的编程语言的范畴，只不过在大多数编程语言当中要使用数据结构。
+			作为程序员需要提前精通：数据结构+算法[计算机专业必修一门课程]
+			Java程序员在不精通数据结构和算法的前提下，也可以进行Java开发，因为Java有一套庞大的类库支撑，别人写好了，直接用。[JavaSE当中的集合章节使用了大量的数据结构]
+			常见的数据结构：
+				-数组
+				-队列
+				-栈
+				-链表
+				-二叉树
+				-哈希表/散列表
+				……
+			1.栈帧永远指向栈顶元素
+			2.栈顶元素处于活跃状态，其他元素静止
+			3.术语：
+				压栈/入栈/push
+				弹栈/出栈/pop
+			4.栈数据结构存储数据的特点是：
+				先进后出
+				先进后出
+		4.方法代码片段纯在哪里？方法执行的时候执行过程的内存在哪里分配？
+			方法代码片段属于.class字节码文件的一部分，字节码文件在类加载的时候将其放放到了方法区当中。所以JVM中的三块主要的内存空间中方法去内存最先由数据。存放了代码片段。
+			代码片段虽然在方法区内存当中只有一份，但是可以被重复调用。每一次调用这个方法的时候，需要给该方法分配一段独立的活动场所，在栈内存中分配。[栈内存中分配方法运行的所属内存空间]
+		5.方法在调用的瞬间，会给该方法分配内存空间，会在栈中发生压栈动作，方法执行结束之后，给该方法分配的内存空间全部释放，此时会发生弹栈动作。
+			压栈：给方法分配内存
+			弹栈：释放该方法的内存空间
+		6.局部变量在"方法体"中声明。局部变量运行阶段额你存存在栈中分配。
+内存分析
+	在EditPlus当中，字体颜色为红色的表示一个类的名字，并且这个类是JavaSE类库中自带的。
+	我们自定义的类(类名)，字体颜色是黑色，是标识符，只要是类名就一定是标识符。
+	调用方法的时候，在参数传递的时候，实际上传递的是变量中保存的那个"值"传过去了。
+方法的重载
+	方法重载又称为：overload
+	前提：功能相似的时候，方法名可以相同。
+	但是，功能不同的时候，尽可能让方法名不同
+	public class 方法重载 {
+		public static void main(String[] args) {
+			//调用方法的时候就像是在使用一个方法一样
+			//参数的类型不同，对应调用的方法不同
+			//此时区分方法不再依靠方法名了，依靠的是参数的数据类型
+			System.out.println(sum(1,2));
+			System.out.println(sum(1.0,2.0));
+			System.out.println(sum(1L,2L));
+		}
+		public static int sum(int a,int b) {
+			System.out.println("sum(int,int");
+			return a+b;
+		}
+		public static long sum(long a,long b) {
+			System.out.println("sum(long,long)");
+			return a+b;
+		}
+		public static double sum(double a,double b) {
+			System.out.println("sum(double,double)");
+			return a+b;
+		}
+	}
+	方法重载条件：
+		在同一个类中
+		方法名相同
+		方法重载与方法名+参数列表有关
+		参数列表相同：
+			数量不同
+				public static void m1(){}
+				public static void m1(int a){}
+			顺序不同
+				public static void m2(int a,double b){}
+				public static void m2(double a,int b){}
+			类型不同
+				public static void m3(int x){}
+				public static void m3(double x){}
+			不是方法重载：
+				public static void m4(int a,int b){}
+				public static void m4(int a,int b){}
+		方法重载与返回值类型无关：
+			错误类型：
+				public static int m5(int a,int b){
+					return 1;
+				}
+				public static void m5(int a,int b){}
+		方法重载与修饰符列表无关
+			错误类型：
+				void m5(int a,int b){}
+				public void m5(int a,int b){}
+				public static void m5(int a,int b){}
+	重载封装：
+	//U类写方法
+		package 封装;
+
+		public class U {
+			public static void sysout(int a) {
+				System.out.println("整形："+a);
+			}
+			public static void sysout(String a) {
+				System.out.println("字符串："+a);
+			}
+		}
+	//A类运行方法
+		package 封装;
+
+		public class A {
+			public static void main(String[] args) {
+				U.sysout("qewr");
+				U.sysout(156);
+			}
+		}
+递归
+	1.什么是递归？
+		方法自身调用自身。
+		a(){
+			a();
+		}
+	2.递归是很耗费栈内存的，递归算法可以不使用的时候尽量别用。
+	3.一下程序运行的时候发生了这样的一个错误[不是异常，是错误Error]：
+		java.lang.StackOverflowError
+		栈内存溢出错误。
+		错误发生无法挽回，只有一个结果，就是JVM停止工作。
+	4.递归必须有结束条件，没有结束条件一定会发生栈内存溢出错误。
+	5.递归即使有了结束条件，即使结束条件是正确的，也可能会发生栈内存溢出错误，因为递归的太深了。
+	注意：
+		递归是很耗费栈内存的，递归算法可以不使用的时候尽量别用。
+		但是有些情况下该使用该功能的实现必须依靠递归方式
+类和对象
+	类{
+		属性；//描述对象的状态信息
+		方法；//描述对象的动作信息
+	}
+类的定义
+	语法结构：
+		[修饰符列表] class 类名{
+			属性；
+			方法；
+		}
+	在类体当中，方法体之外定义的变量被称为"成员变量"
+	成员变量没有赋值，系统赋默认值：一切向0看齐
+	基本数据类型
+		byte
+		short
+		int
+		long
+		float
+		double
+		boolean
+		char
+	引用数据类型
+		String.class
+		Student.class
+		System.class
+		User.class
+		Product.class
+		Customer.class
+		……
+	引用数据类型
+		String.class SUN提供的
+		System.class SUN提供的
+		Student.class 程序员自定义的
+		User.class 程序员自定义的
+		Product.class 程序员自定义的
+		Customer.class 程序员自定义的
+	Java语言中所有的claSS都属于引用数据类型
+	类体=属性+方法
+	属性[存储数据采用变量的形式]
+	由于变量定义在类体中，方法体之外这种变量叫做成员变量
+	对象又被称之为实例，实例变量又被称为对象变量。[对象级别的变量]
+	

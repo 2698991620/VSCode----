@@ -1,0 +1,188 @@
+DOS窗口运行Python:cmd--》Python 路径(可将文件拖动到DOS窗口获取路径)
+ipython,pip命令安装
+Python运行环境退出:1.exit()2.快捷键退出:Ctrl+z
+单行注释:#  快捷键:Ctrl+？  选中多行,Ctrl+？ 
+一般情况下注释写在代码的上面
+有的时候也写在代码的后面
+多行注释:"""  """
+以三个"""开始以"""结束
+Ctrl + D = 赋值加粘贴
+Numbei  数值
+    int
+性别在企业级开发中,使用的单词是:sex男True gender女False
+变量数据类型的查看:type()
+数据类型:int float boolean string list tuple dict
+标识符是用户编程时使用的名字,用于给变量、常量、函数、语句块等命名
+不能用关键字
+数字不能开头
+不能有出了字母_数字以外的数据
+命名要有意义
+驼峰命名法:一个单词首字母小写,第二个单词首字母大写。每个首字母都大写
+包含非法字符:.小数点等
+b = str(a)将a转化为字符串
+布尔类型转化为字符串还是True和False
+非0的整数转化为布尔类型,都是True,0是False
+字符串转化为布尔类型时,只要有内容就是True,包括空格。空字符串是False列表字典也是如此
+//取整  %取余  **取指
+**高于* / % //高于+-  ()优先级最高
+字符串和整数不能相加,字符串和字符串之间是拼接
+字符串乘法是字符串重复多少次
+赋值:
+    a=b=20
+    a,b,c=10,20,30
+a = 36
+a > 10 and print("1")-->1
+//and的性能优化,当and前面的结果是False的情况下,那么后面的代码就不再执行了
+a < 10 and print("1")-->  前面为False,所以后面代码不执行
+a = 38
+a > 39 or print("1")-->1  因为前面为False,所以会执行后面的代码
+//and的性能优化,当and前面的结果是False的情况下,那么后面的代码就不再执行了
+a < 39 or print("1")-->  因为前面为True,所以结果为True,后面的代码就不执行了
+and叫做短路与
+or叫做短路或
+%s  字符串
+%d  数值
+获取长度:len    len函数可以获取字符串的长度(不止字符串)
+查找内容:find    查找指定内容再字符串中是否存在,如果存在就返回该内容在字符串中第一次出现的开始位置索引值,如果不存在,则返回-1。
+判断:startswith,endswith 判断字符串是不是以谁谁谁开头/结尾
+计算出现的次数:count    返回str在start和end之间 在 mystr里面出现的次数
+计算出现次数:count    返回 str在start和end之间 在 mystr里面出现的次数
+替换内容:replace    替换字符串中指定的内容,如果指定次数count,则替换不会超过count次。
+切割字符串:split    通过参数的内容切割字符串
+修改大小写:upper,lower    将字符串中的大小写互换
+空格处理:strip    去空格
+字符串拼接:join    字符串拼接
+如果使用变量名字["键"]=数据时  这个键在字典中不存在,就会变化成添加变量,错过存在就是修改变量
+删除 del list[键名]  删除整个键值对
+清空:clear
+遍历字典的key
+    for key in list.keys():
+        print(key)
+遍历字典的value
+    for value in list.valuess():
+        print(value)
+遍历字典的key和value
+    for key,value in list.items():
+        print(key,value)
+便利字典的项/元素
+open(文件路径,访问模式)
+模式:w可写 r可读
+f = open('test.txt','w')
+f.write("hello world")
+#文件夹是不可以创建的
+fp = open('demo/test.txt','w')
+f,fp是返回值
+w模式下,数据会覆盖
+a模式下write是追加数据
+fp=open('text.txt','r')//只读
+comtent=fp.read()//默认情况下read是一字节一字节的读
+comtent=fp.readline()//一行一行的读,但是只能读一行
+comtent=fp.readlines()//可以按照行来读取,但是会将所有的数据以一个列表的形式返回
+对象-->>字节序列    序列化
+字节序列-->>对象    反序列化
+json模块
+序列化的两种方式dumps,dump
+dumps()
+创建一个文件：
+fp=open('test.txt','w')
+定义一个列表：
+name_list=['zhangsan','lisi']
+导入json模块到该文件中
+import json
+序列化
+将Python对象,变成json字符串
+我们在使用scrapy框架的时候。该框架会返回一个对象,我们要将对象写入到文件中,就要使用json.dumps
+names=json.dumps(name_list)
+print(name)
+print(type(name))-->str
+fp.write(names)//将name文件写入到文件中
+fp.close()
+dump
+在将对象转换为字符串的同时,指定一个文件的对象,然后把转换后的字符串你写入到这个文件里
+fp=open('test.txt','w')
+name_list=['zhangsan','lisi']
+import json
+//相当于names=json.dumps(name_list)和fp.write(names)
+json.dump(name_list,fp)
+fp.close()
+反序列化
+将json的字符串变成一个Python对象
+fp=open('test.txt','r')
+content=fp.read()//读取字符串
+import json
+result=json.loads(content)
+load
+fp=open('test.txt','r')
+import json
+result=fp.load(fp)
+fp.close()
+异常的格式
+try:
+    可能出现异常的代码
+except 异常的类型
+    友好的提示
+table+tab键
+table  表格
+tr  行
+td  列
+width  宽
+height  高
+border  边宽
+width="200px"-->px是像素单位
+ul标签无序列表  li
+ol有序列表    li
+a标签超链接  <a href="链接(域名)"></a>
+爬虫：urllib
+#使用urllib来获取百度首页的源码
+import urllib.request
+
+#(1)定义一个url(域名)
+url='http://www.baidu.com'
+#(2)模拟浏览器，像服务器发出请求  response相应
+response = urllib.request.urlopen(url)#定义变量接受反馈
+#(3)获取响应中的页面中的源码  content内容
+#返回中的b'是因为read方法，返回的是字节形式的二进制数据
+#我们要将二进制的数据转化为字符串
+#二进制--》字符串  解码  decode('编码的格式')-->charset=utf-8"
+content = response.read().decode('utf-8')
+print(content)
+urllib一个类型六个方法
+import urllib.request
+url = 'http://www.baidu.com'
+#模拟浏览器向百度发送请求
+response = urllib.request.urlopen(url)
+一个类型和六个方法
+response是HTTPResponse的类型
+print(type(response))
+按照一字节以字节的去读
+content = response.read()
+print(content)
+返回多少个字节
+content = response.read(5)#读五个字节
+print(content)
+content = response.readline()#读取一行
+print(content)
+content = response.readlines()#结果是转化为字符串读取
+print(content)
+返回状态码，如果是200了，那就证明我们的逻辑没有问题
+print(response.getcode())
+返回url地址
+print(response.geturl())
+获取的是一个状态信息
+print(response.getheaders())
+一个类型  HTTPResponse
+六个方法  read  readline  readlines  getcode  deturl  getheaders
+下载：
+import urllib.request
+下载网站
+url_page = 'http://www.baidu.com'
+urllib代表的是下载的路径  filename文件的名字
+在Python中可以写变量的名字，也可以直接写值
+urllib.request.urlretrieve(url=url_page)
+urllib.request.urlretrieve(url_page,'baidu.html')
+下载图片
+url_img='https://img1.baidu.com/it/u=3479666900,2123308694&fm=253&fmt=auto&app=120&f=JPEG?w=477&h=270'
+urllib.request.urlretrieve(url_img,filename='焰灵姬.jpg')
+下载视频video中的src就是视频的地址
+url_video='https://vd2.bdstatic.com/mda-nadkwezrtr5z2wqz/720p/h264_delogo/1642172550102920727/mda-nadkwezrtr5z2wqz.mp4?v_from_s=hkapp-haokan-hna&auth_key=1648556887-0-0-7d666c1a018b0bad7a6bd340a84bcb2c&bcevod_channel=searchbox_feed&pd=1&cd=0&pt=3&logid=3486998972&vid=11248368868033022983&abtest=100815_1-101130_2-101245_3-17451_1&klogid=3486998972'
+urllib.request.urlretrieve(url_video,'焰灵姬yyds.mp4')

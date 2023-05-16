@@ -1,0 +1,67 @@
+master节点：
+# hostnamectl set-hostname master
+# cat /etc/hosts
+127.0.0.1   localhost localhost.localdomain localhost4 localhost4.localdomain4
+::1         localhost localhost.localdomain localhost6 localhost6.localdomain6
+10.18.4.10 master
+10.18.4.11 node
+node节点：
+# hostnamectl set-hostname node
+# cat /etc/hosts
+127.0.0.1   localhost localhost.localdomain localhost4 localhost4.localdomain4
+::1         localhost localhost.localdomain localhost6 localhost6.localdomain6
+10.18.4.10 master
+10.18.4.11 node
+（2）关闭SELinux和防火墙
+所有节点关闭SELinux：
+# sed -i 's/SELINUX=enforcing/SELINUX=disabled/g' /etc/selinux/config
+# setenforce 0
+所有节点关闭防火墙：
+# systemctl stop firewalld.service
+# systemctl disable firewalld.service
+（3）删除iptables防火墙规则
+所有节点清除iptables规则：
+# iptables –F
+# iptables –X
+# iptables –Z
+# /usr/sbin/iptables-save
+（4）配置yum源
+将Chinaskill_Cloud_PaaS.iso镜像包上传至master节点。
+master节点：
+# mount -o loop Chinaskill_Cloud_PaaS.iso /mnt/
+# cp -rfv /mnt/* /opt/
+# umount /mnt/
+# mv /etc/yum.repos.d/CentOS-* /home
+# cat << EOF >/etc/yum.repos.d/local.repo
+[k8s]
+name=k8s
+baseurl=file:///opt/kubernetes-repo
+gpgcheck=0
+enabled=1
+EOF
+master节点安装ftp服务器：
+# yum install -y vsftpd
+# vi /etc/vsftpd/vsftpd.conf 
+anon_root=/opt
+# systemctl start vsftpd && systemctl enable vsftpd
+node节点：
+# mv /etc/yum.repos.d/CentOS-* /home
+# cat << EOF >/etc/yum.repos.d/local.repo
+[k8s]
+name=k8s
+baseurl=ftp://master/kubernetes-repo
+gpgcheck=0
+enabled=1
+EOF
+cd /opt
+ll  查询
+./k8s_harbor_install.sh
+    请在浏览器通过http://192.168.200.13访问Harbor
+yum install vim -y
+cp /opt/k8s_image_push.sh /opt/images/
+    ./k8s_image_push.sh 
+    输入镜像仓库地址(不加http/https): 192.168.200.13
+    输入镜像仓库用户名: admin ^H^H
+    输入镜像仓库用户密码: Harbor12345
+    您设置的仓库地址为: 192.168.200.13,用户名: admi,密码: xxx
+    是否确认(Y/N): y                 41:30

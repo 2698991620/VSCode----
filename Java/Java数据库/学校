@@ -1,0 +1,650 @@
+spool命令：spool d:\a.sql#关闭后将操作的数据保存到这个文件
+关闭：spool off;
+推出：exit
+登录命令：sqlplus （sys）（用户名） as sysdba;
+    sqlplus （sys/123456）（用户名/密码） as sysdba;
+切换用户：conn scott/tiger
+删除用户：drop user zhangsan;
+删除用户和所有对象： drop user zhangsan cascade;
+创建用户：create user （jason）（用户名） identified by price;
+select查询语句：select （查询的列） from （表名）;
+创建用户指定默认表空间和临时表空间：
+    create user zhangsan identified by 123
+    default tablespace system
+    temporary tablespace temp;
+desc dba_users -- 查看表 dba_users 的结构
+select username, default_tablespace from dba_users; -- 查看dba_users表中 用户名与默认表空间这两列的 所有数据
+alter user （scott）（用户名） account unlock;#解锁用户
+连接数据库权限(ora-01045报错)(通过管理员用户)：grant create session to jason（用户名）;
+grant all privileges to zkx;#授予用户所有权限
+修改alter用户密码：alter user jason identified 123;
+修改当前用户密码：password
+connect角色：允许用户连接数据库
+resource角色：允许用户创建相关的数据库对象
+    grant resource,connect （scott）（用户名） with admin option;
+with admin option(在授予权限命令末尾加上，可以是被授权的用户授予其他用户相同的权限)：grant （create session）（权限） to （jason）（用户名） with admin option;
+数据类型：
+    字符型：char(2000),nchar(2000),varchar(4000),nvarchar2(4000),数据型
+    数值型：numeric(p,s),decimal(p,s)
+表命令：
+创建表:create table test_char(sex char);#test_char()表名,sex char列，如果没有指定char()的长度，则char()的长度为1
+查看当前用户下所有表：select table_name from user_tables;
+删除drop语句：drop table test_char;#test_char表名
+查看表结构：desc test_char
+修改alter语句：alter table test_char （modify）（修改） sex char(100);#添加列用add 
+（insert into）（插入） test_char values('李三')
+select查询语句(表数据)：select * from test_char;
+查看字符长度和字节长度：select length(sex),lengthb(sex) from test_char;
+alter table test_char#修改表
+add sex1 nchar(3);#添加一列(colmn)sex1，数据类型nchar
+01441错误(修改长度错误)：先删除--delete from test_char;
+                        再修改长度--alter table test_char modify sex char(3);
+创建表：
+    语法：
+    create [global temporary] table table_name(#global temporary：表示临时，保存时间参考on commit选项。table_name：表名
+        column_name type [constraint constraint_def default default_exp],#column_name：列名。type：列的类型。constraint_def：列的约束。default_exp：列的默认值。
+        ……
+    )
+    [on commit {delete|preserve} rows]#on commit：控制临时表中数据保存的时间
+    tablespace tab_space;#tab_space：指定表存放的表空间，没有指定的话放在默认表空间
+    
+    create table order_ststus2(
+        id integer constraint order_ststus2_pk primary key,#integer：id的类型。constraint：约束(与名字可省略)。order_ststus2_pk：约束名字。primary key：主键(标识表中数据唯一)
+        status varchar2(10),
+        last_modified date default sysdate#default：默认值。sysdate：获取系统当前时间
+    );
+    插入数据时可以在表名后加上列名：
+        insert into order_ststus2(id,status) values(100010,'已支付')
+    给表加备注：comment on table order_ststus2 is '111';
+    给列条件备注：comment on column order_ststus2.last_modified is '最后修改时间'
+    set linesize 100#设置整行宽度
+    复制表(只复制内容，不复制约束)：create table order_ststus3 as select * form order_ststus2;
+    插入表中数据：insert into order_ststus3 select * from order_ststus3;
+    表中数据条件复制：create table order_ststus3 as select * from order_ststus2 where id=100010;#只复制表结构：where条件不成立即可
+    添加求平均值的一列(虚拟列)：
+        alter table salary_grades
+        add avg_salary as ((low_salary+high_salary)/21);#low_salary+high_salary表示需要求和的两列。
+    03章生日例：
+        创建：create table customers(id int primary key,first_name varchar(10),
+        last_name varchar2(10),dob date default sysdate,phon varchar2(12));
+        插入：insert into customers values(10,'fred','brown','19-7月-2003','800-555-1215');#值为null就是没有
+        查看：select * from customers;
+    update修改表中的行：表名，需要修改的列用where子句指定条件，列名的清单及新值
+        update customers set last_name='orange' where id=11;#customers表名，last_name修改列名，id=11行条件
+    更新多列：
+        update （products）（表名） set price = price*1.2,name=lower(name) where price>=20;#price价格，name=lower(name)字符串小写
+    删除行：
+        delete from customers where id=12;
+    截断表(删除所有行和重置表的存储区域)(无法恢复)：
+        truncate table order_ststus2;
+约束类型：
+    主键约束：primary key
+    唯一键约束：unique
+    非空约束：not null
+    默认约束：default
+    检查约束：check    create table t(id int, sex char(1) constraint sex_chk check(sex in ('1','0')));#t:表名。check(sex in ('1','0')也可以改成区间check(sex>=10 and sex <=100)
+    外键约束：foreign key
+删除含有null的行：delete from test1 where id is null;
+主键与外键：
+    创建主外键关系：
+        create table person(id varchar(32),name varchar(30),constraint p_pk primary key(id));
+    创建外键:
+        create table car(id varchar(32),name varchar(30),pid varchar(32),constraint c_pk primary key(id),constraint c_fk foreign ky(pid) references person(id));#约束名：c_fk。约束：foreign ky。外键列：(pid)。引用：references。被引用的表和列：person(id)。
+    外键数据要参考(来源)主键数据
+给列取别名：
+    select empno as "员工编号" from emp;#列名：empno。表名：emo。
+显示列：
+    select empno from emp;#列名：empno。表名：emp。
+列拼接：
+    select empno||ename as "员工" from emp;
+匹配含有%的数据（需要转义）：
+    select * from emp where ename like '%\%%' escape '\'
+函数：
+    聚集函数分为以下几种
+    AVG(x)：返回x的平均值
+    COUNT(x)：返回统计的行数
+    MAX(x)：返回x的最大值
+    MIN(x)：返回x的最小值
+    SUM(x)：返回x的总计值
+    以下是不常用的
+    MEDIAN(x)：返回中间值
+    STDDEV(x)：返回标准偏差
+    VARIANCE(x)：返回x的方差
+表连接查询：
+    select * from emp;
+    select * from dept;#选中两行一起查询
+员工编号、名称、职位、部门名称：e.empno;e.ename;e.job ;d.dname
+表数据：
+    emp表：员工编号、姓名、工资。
+    dept表：部门名称。
+    salgrade表：工资等级
+    关联条件：
+        员工和部门：e.deptno=d.deptno
+        员工和员工等级：e.sal between salgrade.losal and salgrade.hisal
+--分组查询  group by
+    select deptno, count(empno), avg(sal) from emp
+    group by deptno;#按照deptno分类
+
+    --查询出 各个职位的 人数、平均工资、最高工资
+    select job,count(empno), avg(sal),max(sal) from emp
+    group by job
+    HAVING count(empno) > 2;#分组以后的条件筛选
+多表查询：
+    select e.empno,e.ename,e.sal,d.dname,sg.grade
+        from emp e,dept d,salgrade sg
+        where e.deptno = d.deptno#关联条件
+            and e.sal BETWEEN sg.losal AND sg.hisal#and e.sal BETWEEN sg.losal AND sg.hisal：查询工资级别的关联条件
+        order by d.dname;#按照部门名称排序
+    连接条件=表数-1
+
+--内连接：就是 两张表中关联数据的交集
+    select e.empno,e.ename,e.job,d.dname 
+        from emp e, dept d 
+            where e.deptno = d.deptno;
+            
+    select e.empno, e.ename, e.sal, d.dname, sg.grade 
+        from emp e, dept d, salgrade sg
+        where e.deptno = d.deptno
+            and e.sal BETWEEN sg.losal and sg.hisal
+        order by e.empno;
+        
+    --SQL/92
+    select e.empno,e.ename,e.job,d.dname, deptno
+        from emp e 
+            join dept d using(deptno);
+
+    select e.empno, e.ename, e.sal, d.dname, sg.grade 
+        from emp e 
+            inner join dept d on e.deptno=d.deptno
+            inner join salgrade sg on e.sal BETWEEN sg.losal and sg.hisal
+        order by e.empno;
+外连接((+)号为补全，用null值)：
+    --外连接
+    --左外连接：两张表中的关联数据以及左表中未关联的数据
+    select e.empno,e.ename,e.job,d.dname 
+        from emp e, dept d 
+            where e.deptno = d.deptno(+)
+            order by d.dname;
+
+    --SQL/92
+    select e.empno,e.ename,e.job,d.dname 
+        from emp e left join dept d on e.deptno = d.deptno
+        order by d.dname;
+
+    --右外连接：两张表中的关联数据以及右表中未关联的数据
+    select e.empno,e.ename,e.job,d.dname 
+        from emp e, dept d 
+            where e.deptno(+) = d.deptno
+            order by d.dname;
+            
+    select e.empno,e.ename,e.job,d.dname 
+        from emp e right outer join dept d on e.deptno = d.deptno
+        order by d.dname;
+    --自连接
+    --查询出员工编号、名称、职位，以及上级的名称和职位    
+    select e1.empno,e1.ename,e1.job, e2.ename "上级", e2.job "上级职位" 
+        from emp e1, emp e2
+        where e1.mgr = e2.empno;
+sql/92语法：
+    from table1 {left|right|full} outer join table2#outer可以省略
+        说明：left：左外连接。right：右外连接。full：全连接(所有行，没有的补null)。
+    
+    --查询出 所有员工的编号、名称、工资、上级名称、部门名称、所在位置
+    select e1.empno,e1.ename,e1.sal, e2.ename "上级", d.dname, d.loc
+        from emp e1 
+            inner join emp e2 on e1.mgr = e2.empno
+            inner join dept d on e1.deptno = d.deptno;
+            --查询出 所有员工的编号、名称、职位，以及所在部门的部门名称、部门人数和平均工资
+        
+    /*
+    1、所需表：emp、dept、针对emp按照部门分组统计后的数据表
+    2、关联关系：deptno、deptno
+    */
+    select deptno,count(empno),avg(sal) from emp group by deptno;
+    
+    select * 
+        from emp e1 
+            inner join (select deptno,count(empno) "部门人数",avg(sal) "平均工资" from emp group by deptno) e2
+            on e1.deptno = e2.deptno;
+
+--子查询
+    --工资高于平均工资的员工
+    select empno, ename from emp 
+        where sal > (select avg(sal) from emp)
+        order by empno;
+--多行子查询
+    --查询出所有员工中，职位和部门10一致的所有员工
+    select * from emp where job in(select job from emp where deptno=10);
+    --查询出 各个部门最低工资的员工信息
+    select * from emp where sal in (select min(sal) from emp group by deptno); 
+    --查询出 工资高于本部门平均工资的 员工信息
+    select empno, ename, job, sal from emp e
+        where sal > (select avg(sal) from emp ee where e.deptno = ee.deptno);
+查询行数：select count(1) from emp;1：列名和值都为1
+    查询不在部门10的员工信息：
+        select empno,ename,deptno from emp e 
+            where not exists(select 1 from dept d where e.deptno=d.deptno
+            and d.deptno=10);
+将工资低于部门平均工资的提升10%#创建新表empl
+    update empl e set sal = sal*1.1
+                where sal < (select avg(sal) from empl ee
+                    where e.deptno=ee,deptno);
+    select * from empl;
+删除重复行：
+    --只保留未重复
+	delete from tt where id in (
+		select id from tt group by id,age
+			having count(1) >1;
+	)
+select rowid,empno from emp;#rowid是Oracle数据库的唯一行标识
+select rownum,empno from emp;#rownum：返回结果集的行号
+/*
+1、查询所有雇员的姓名、SAL与COMM之和。
+
+2、查询所有81年7月1日以前来的员工姓名、工资、所属部门的名字
+
+3、查询所有在CHICAGO工作的经理MANAGER和销售员SALESMAN的姓名、工资
+
+4、查询公司中按年份月份统计各地的录用职工数量
+
+5、查询2个以上员工的部门，显示部门编号，部门名称，部门位置，部门人数
+
+6、列出所有员工的姓名及其直接上级的名字
+
+7、列出受雇日期早于直接上级的所有员工的编号、姓名、部门名称
+
+8、列出部门名称和这些部门的员工信息，同时列出那些没有员工的部门
+
+9、出薪资高于公司工资平均薪金的所有员工信息，所在部门名称，上级领导，工资等级
+*/
+--2
+	select e.ename,sal,dname from emp e
+		inner join dept d on e.deptno=d.deptno
+		where e.hiredate > '1-7月-81';
+--3
+	select ename,job,sal,dname,loc from emp e
+		inner join dept d on e.deptno=d.deptno
+		where d.loc = 'CHICAGO' and job in ('MANAGER','SALESMAN');
+--4
+	select to_char(hiredate,'yyyy-mm'),count(1)#to_char()字符串转换函数
+		from emp group by to_char(hiredate,'yyyy-mm');
+	--完整
+	select to_char(hiredate,'yyyy-mm'),count(1)
+		from emp e
+			inner join dept d on e.deptno=d.deptno
+			group by to_char(hiredate,'yyyy-mm'),d.dname,d.loc;
+--5
+	select d.deptno,dname,loc,count(1) from emp e
+		inner join dept d on e.deptno=d.deptno
+		group by d.deptno,dname,loc
+		having count(1) > 3;
+--6
+	selcect e.empno,e.ename,e.job,m.ename "上级",m.job "上级职位"
+		from emp e
+		inner join emp m on e.mgr=m.empno;
+--7
+	selcect e.empno,e.ename,e.job,m.ename "上级",m.job "上级职位"
+		from emp e
+		inner join emp m on e.mgr=m.empno
+		where e.hiredate > m.hiredate;
+--8
+	select ename,sal,dname,hiredate from emp e
+		right join dept d on e.deptno=d.deptno;
+序列：
+    查看所有序列：
+        select * from user_sequences;
+    序列创建：
+        create sequence sequence_name#sequence_name：序列名称。
+        [start with staet_num]#staet_num：默认数。
+        [increment by increment_num]#increment_num：每次增长的数。
+        [{maxvalue maximum_num|numaxvalue}]#maximum_num：序列最大值。numaxvalue：默认最大值。
+        [{minvalue minimum_num|nominvalue}]#序列最小值：minimum_num，必须比默认值和最大值小。nominvalue：默认最小值。
+        [{cycle|nocycle}]#cycle：循环。nocycle：不循环
+        [{cache cache_num|nocache}]#cache_num：保存在内存缓存证书的数量，默认是20，最小是2，最大是ceil(maximum_num-minimum_num)/abs(increment_num)。nocache：没有缓存数字
+        [{order|noorder}];#order：保证整数的请求顺序是按照生成顺序得到的。noorder：不保证整数的请求顺序是按照生成顺序得到的。
+    序列当前值：#需要先首次生成
+        select s_test.currval from dual;
+    序列生成值：
+        select s_test.currval from dual;
+    例：
+        创建order_status2表
+            create table order_ststus2(
+                id integer constraint order_status2_pk primary key,
+                status varchar2(10),
+                last_modified date default sysdate
+            );
+        创建序列
+            create sequence s_order_status2 nocache;#序列名通常是s或者seq+表名
+        插入数据
+            insert into order_ststus2(id,status,last_modified)
+            values(s_order_status2.nextval,'placed','01-1月-2006');
+            insert into order_ststus2(id,status,last_modified)
+            values(s_order_status2.nextval,'pending','01-1月-2006');
+索引：
+    创建索引：
+        create [unique] index index_name on#unique：索引列中值唯一。index_name：索引名。
+        table_name(column_name[,column_name……])#table_name：被添加索引的表名。column_name：添加索引的列(可以是多列)。
+        tablespace tab_space;#tab_space：存储索引的表空间，没有则是默认。
+    例：
+        创建表：
+        create table customer(
+            id int primary key,
+            first_name VARCHAR2(10) not null,
+            last_name VARCHAR2(10) not null,
+            dob date,
+            phone VARCHAR2(12));
+        添加数据：
+            序列数据：create sequence s_order_status2 nocache;
+            INSERT INTO customer
+            VALUES (s_order_status2.nextval, 'John', 'Brown', '01-1月-1965', '800-555-1211');
+            INSERT INTO customer 
+            VALUES (s_order_status2.nextval, 'Cynthia', 'Green', '05-2月-1968', '800-555-1212');
+            INSERT INTO customer
+            VALUES (s_order_status2.nextval, 'Steve', 'White', '16-3月-1971', '800-555-1213');
+            INSERT INTO customer
+            VALUES (s_order_status2.nextval, 'Gail', 'Black', NULL, '800-555-1214');
+            INSERT INTO customer
+            VALUES (s_order_status2.nextval, 'Doreen', 'Blue', '20-5月-1970', NULL);
+        查询：
+            select * from customer;
+            select id,first_name,last_name,dob,phone
+                from customer where last_name='Brown';
+        创建索引查询：
+            create index i_customer_last_name on
+                customer(last_name);
+        如果索引结果显示不全：按CTRL+end(功能键)
+视图：
+    创建视图权限：
+        grant create view to scott; #切换管理员sys给scott用户授权
+    视图创建：
+        create [or replace] [{force|noforce}] view view_name    #or replace：表示替换已存在的视图。force：强制创建视图，即使基表不存在也创建。noforce：基表不存在就不创建视图，默认值。view_name：视图名称。
+        [(alias_name[,alias_name……])] as subquery   #alias_name：子查询表达式的别名。subquery：检查基表数据的子查询。
+        [with {check option|reao only}constraint constraint_name];  #with check option：表示只有被出啊寻搜索到的数据行才可以进行插入、更新、删除操作，默认是不使用该项。with reao only：只能读取基表的数据行。constraint_name：with check option或with reao only选项的约束名。
+    例：
+        create (or replace) view v_emp_dept as  #or replace:视图存在就修改
+            select e.*,d.dname,d.loc from emp e
+                inner join dept d on e.deptno=d.deptno
+            where e.deptno < 20;
+        select * from v_emp_dept;
+    查看所有视图：
+        select * from user_views;
+同义词：
+    创建同义词权限：
+        create synonym|create public synonym
+    创建同义词：
+        create synonym d_sum for dept_sum_vu;   #原视图：dept_sum_vu。同义词：d_sum。
+    删除同义词：
+        drop synonym d_sum;
+PL/SQL的基本结构
+    DECLARE
+        说明部分(变量声明，光标申明，例外说明)
+    begin
+        语句序列(DML语句)...
+    exception
+        例外处理语句
+    END;
+    控制流语句：
+    if...then      elsif … then      end if;
+    判断if正确则执行then，否则执行else(elsif为嵌套判断)
+    注意elsif,里面少一下e.
+    Case  var  when … then    when … then   end
+    有逻辑的从数值中做出选择
+    Loop     exit    end loop
+    循环控制，用判断语句执行exit
+    Loop       exit when …        end loop
+    同上，当when为真时执行exit
+    while..loop         end loop
+    当while为真时循环
+    for...in...loop        end loop
+    已知循环次数的循环
+    查询语句：case
+        select (case id when 2 then '222' else '33' end) from t6;
+        select (case when id=2 then '2222' else '333' end) from t6;
+    先打开输出：
+    set serveroutput on
+        name varchar(30);--声明时不设置默认值
+        name varchar(30):='jack';--声明带有默认值
+        name preson.name%type;--直接引用一个表的数据类型
+    begin
+    exception
+    end;
+    例：
+        varl char(15);
+        married boolean:=true;
+        pasl number(7,2);
+        my_name emp.ename%type;
+        emp_rec emp%rowttype;   #保存一行的值
+    常量：
+        <常量名> constant <数据类型>:=<值>  #首字母大写
+    set SERVEROUTPUT on;
+    declare
+        name varchar2(20) := 'Hello World!!!';
+        Pass_Score constant INTEGER := 60;
+    BEGIN
+        DBMS_OUTPUT.PUT_LINE(name);
+        DBMS_OUTPUT.PUT_LINE(name||'abc');
+        END;
+    控制台输入：
+        accept age prompt '请输入一个数字:';
+        declare
+            nn number;
+        begin
+            nn :=& age;
+            DBMS_OUTPUT.PUT_LINE('你输入的数字是：'||nn);
+        end;
+    异常处理：
+        格式：
+        EXCEPTION
+            WHEN <异常情况名> THEN
+                    <异常处理代码>
+            WHEN <异常情况名> THEN
+                <异常处理代码>
+        例：
+        begin
+            exception NO_DATE_FOUND then
+                dbms_out put.put_line('没有你要的数据')
+            when others then
+                dbms_out put.put_line('其他错误')
+    简单的case when else end语句
+        declare
+            i int:=0;
+        begin
+            i:=(case when 1=1 then 111 else)
+    例：
+        declare
+            n number:=11;
+        begin
+            n:=case n when 0 then 111 when 1 then 222 else 333 end;
+    if语句：
+        declare
+            n number:=1;
+        begin
+            if n=0 then
+                n:=111,
+            elseif n=1 then
+                n:=333;
+            end if;
+            dbms_out put.put_line(n);
+        end;
+    循环语句loop……exit……end：
+        LOOP...EXIT WHEN...END语句的语法结构如下：
+        LOOP
+            <程序块 1>
+            EXIT WHEN <条件表达式>
+            <程序块 2>
+        END LOOP;
+        例：
+        loop
+            <程序块1>
+            if <条件表达式> then
+                exit
+            end if
+            <程序块2>
+        end loop;
+    执行到exit语句退出循环。
+    例：
+        1~5累加
+        DECLARE
+            varnum INTEGER:=1;
+            varsum INTEGER:=0;
+        BEGIN
+            LOOP
+                varsum:=varsum+varnum;
+                DBMS_OUTPUT.PUT(varnum);
+                varnum:=varnum+1;
+                --判断退出
+                if varnum>5 then
+                    EXIT;
+                end if;
+                DBMS_OUTPUT.PUT('+');
+            end loop;
+            DBMS_OUTPUT.PUT_LINE('='||varsum);
+        END;
+    for循环：
+        FOR...IN...LOOP...END LOOP语句的语法如下
+            FOR <循环变量> IN <初始值>..<终止值> LOOP
+                <程序块>
+            END LOOP;
+        例：
+        DECLARE
+            varnum INTEGER:=1;
+            varsum INTEGER:=0;
+        BEGIN
+            FOR varnum IN 1..5 LOOP
+                varsum:=varsum+varnum;
+                DBMS_OUTPUT.PUT_LINE (varnum);
+            END LOOP;
+            END;
+    while循环：
+        WHILE...LOOP...END LOOP语句语法结构如下：
+            WHILE <条件表达式>  LOOP
+                <程序块>
+            END LOOP;
+        例：
+        DECLARE
+            varsum int :=1;
+            varnum int :=2;
+        BEGIN
+            dbms_output.put(varsum);
+            WHILE varnum<6 loop
+                dbms_output.put('+'||varnum);
+                varsum:=varsum+varnum;
+                varnum:=varnum+1;
+            end loop;
+            dbms_output.put_line('='||varsum);
+        end;
+事务：维护数据的一致性
+    方法：commit和rollback#提交和回退
+    update emp set sal=1200 where empno=7369;
+    commit;#提交
+    delect from emp where empno=7369;
+    rollback;#回退
+例题：
+    按照职位加薪
+        declare
+            en emp.ename%type;
+            eno emp.empno%type;
+            job emp.job%type;
+        begin
+            en := 'WARD';
+            select empno,job into eno,job from emp where ename=en;
+            update emp set sal=sal+ CASE job WHEN 'CLEK' THEN 500
+                    WHEN 'SALESMAN' THEN 1000
+                    WHEN 'ANALYST' THEN 1500
+                    ELSE 2000 END
+                WHERE empno=eno;
+            dbms_output.put_line('加薪成功');
+        END;
+        select * from emp;
+        rollback;
+存储
+    创建存储过程：
+        create [or replace] PROCEDURE 过程名(参数列表)
+            as
+                PLSQL子程序体
+    存储过程中可以接收的参数类型：
+        in类型为输出类型的参数
+        out类型为输出类型的参数。
+    存储过程调用：
+        一：
+            begin
+                过程名(参数)
+            end;
+        二：
+            exec 过程名(参数);
+    例：
+        加薪的存储过程：
+            create or replace PROCEDURE raisesalary(eno emp.empno%type)
+            as
+                en emp.ename%type;
+                ejob emp.job%type;
+            begin
+                select ename,job into en,ejob from emp where empno=eno;
+                --加薪
+                update emp set sal=asl+case ejob when 'CLERK' then 500
+                    when 'SALESMAN' then 1000
+                    when 'ANALYST' then 1500
+                    else 2000 end
+                where empno = eno;
+                --commit;
+                dbms_output.put_line('员工加薪成功');
+            exception
+                when NO_DATE_FOUND THEN
+                    dbms_output.put_line('员工编号有误，请重新操作。');
+            end;
+            exec raisesalary(75211);
+        输出类型：
+            create or replace PROCEDURE raisesalary(eno [in] mp.empno%type,cnt out integer)--out:定义输出类型参数。in:定义输入类型参数（可以不加）。
+            as
+                en emp.ename%type;
+                ejob emp.job%type;
+            begin
+                select ename,job into en,ejob from emp where empno=eno;
+                --加薪
+                update emp set sal=sal+case ejob when 'CLERK' then 500
+                    when 'SALESMAN' then 1000
+                    when 'ANALYST' then 1500
+                    else 2000 end
+                where empno = eno;
+                --commit;
+                select count(1) into cnt from emp;
+                dbms_output.put_line('员工加薪成功');
+            exception
+                when NO_DATA_FOUND THEN
+                    dbms_output.put_line('员工编号有误，请重新操作。');
+            end;
+            --输出
+            declare
+                n number;
+            begin
+                exec raisesalary(7788,n);
+            end;
+    例：
+        打印形状的存储过程
+            create PROCEDURE showShape(t number,x number,y number)
+            as
+                i number :=1;
+                j number :=1;
+                line_cnt number :=1;
+            begin
+                if t=1 then
+                    for i in 1..x loop
+                        for j in 1..y loop
+                            dbms_output.put_line('#');
+                        end loop;
+                        dbms_output.put_line('');
+                    end loop;
+                elsif t=2 then
+                    line_cnt :=x/2;
+                    for i in 1..line_cnt loop
+                        for j in 1..(line_cnt-1) loop
+                            dbms_output.put_line(' ');
+                        end loop;
+                        for j in 1..(2*i-1) loop
+                            dbms_output.put_line('#');
+                        end loop;
+                        dbms_output.put_line('');
+                    end loop;
+                end if;
+            end;
+            exec showShape(1,5,8);
