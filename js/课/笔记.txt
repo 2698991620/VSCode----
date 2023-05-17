@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>菜鸟教程(runoob.com)</title>
+<script>
+function changeLink(){
+	document.getElementById('myAnchor').innerHTML="RUNOOB";#document.getElementById是修改    修改.innerHTML修改文本
+	document.getElementById('myAnchor').href="//www.runoob.com";#修改.href修改地址 	#这里写绝对地址 如果不是在当前页面上可以使用相对地址 可以使用URL中的参数(%xx代码) 如果不是在可读的页面上将使用相对地址 如果不支持参数的语言 可以使用下面的链接进行测试 将http://codegeex.cn bar打印出来 等等等 这里也可以使用“a href=”替换
+	document.getElementById('myAnchor').target="_blank";#target参数是可选的，表示在新窗口中打开链接。不应使用此参数，但是可以使用其他名称，如页面根目录下的“hello.html”。 	#这是一个简单的“a link”，它应该适用于包含有文本和地址的一个HTML文档，而不是一个单独的单一行文本或两个单一行文本。 	#这个页面已经有了一个googles
+}#当前窗口打开新连接
+</script>
+</head>
+<body>
+ 
+<a id="myAnchor" href="//www.microsoft.com">Microsoft</a>
+<input type="button" onclick="changeLink()" value="修改链接">
+ 
+</body>
+</html>

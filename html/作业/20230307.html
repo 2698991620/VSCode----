@@ -1,0 +1,64 @@
+<!--
+ * @Descripttion: 
+ * @version: 
+ * @@Company: DCIT-SH
+ * @Author: 宸
+ * @Date: 2023-03-07 08:31:23
+ * @LastEditors: 宸
+ * @LastEditTime: 2023-03-07 09:02:24
+-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        .table1{
+            width: 500px;
+            margin: auto;
+        }
+    </style>
+</head>
+<body>
+    <!-- 
+        name属性：表单名字
+        method属性：表单提交方式（post，gat），这是固定值
+        action属性：表单提交地址
+     -->
+     <form name="regform" method="post" action="index.html">
+        <table class="table" border="1">
+            <tr>
+                <td>用户名：</td>
+                <td>
+                    <!-- type="text" 表示文本框 name="username" 文本框的名字 -->
+                    <input type="text" name="username">
+                </td>
+            </tr>
+            <tr>
+                <td>用户密码：</td>
+                <td>
+                    <!-- type="password" 表示密码框 name="userpwd" 密码框的名字 -->
+                    <input type="password" name="userpwd">
+                </td>
+            </tr>
+            <tr>
+                <td>性别</td>
+                <td>
+                    <!-- type="radio" 表示是单选框 name="sex" 单选框的名字，名字必须相同-->
+                    <input type="radio" name="sex" value="男">男
+                    <!-- checked表示默认选中 -->
+                    <input type="radio" name="sex" value="女" checked>女
+                </td>
+            </tr>
+            <tr>
+                <td>爱好：</td>
+                <td>
+                    <input type="checkbox" name="aihao" value="游山玩水">玩游戏
+                </td>
+            </tr>
+        </table>
+     </form>
+</body>
+</html>

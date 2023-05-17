@@ -1,0 +1,213 @@
+<!--
+ * @Author: error: error: git config user.name & please set dead value or install git && error: git config user.email & please set dead value or install git & please set dead value or install git
+ * @Date: 2023-05-12 20:28:28
+ * @LastEditors: error: error: git config user.name & please set dead value or install git && error: git config user.email & please set dead value or install git & please set dead value or install git
+ * @LastEditTime: 2023-05-15 15:59:18
+ * @FilePath: \VSCode编程笔记\js\打地鼠\打地鼠.html
+ * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
+-->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>打地鼠</title>
+    <style type="text/css">
+        #all {
+            width: 1000px;
+            /* w1000 */
+            height: 600px;
+            /* h600 */
+            background-image: url('img/bg.jpg');
+            margin: 100px auto;
+            /* 左右居中 */
+            position: relative;
+            /* 相对定位 */
+        }
+
+        #set {
+            position: absolute;
+            /*绝对定位*/
+            top: 50px;
+            right: 50px;
+        }
+
+        #show {
+            position: absolute;
+            left: 250px;
+            bottom: 30px;
+        }
+    </style>
+
+</head>
+
+<body>
+    <div id="all">
+        <div id="set">
+            <table>
+                <tr>
+                    <td>游戏时间</td>
+                    <td>
+                        <input type="text" name="" id="gameTime" value="1" onkeyup="TimeOut()">分钟
+                    </td>
+                </tr>
+                <tr>
+                    <td>倒计时间</td>
+                    <td> <span id="timeOut">60</span>秒</td>
+                </tr>
+                <tr>
+                    <td>地鼠出现间隔</td>
+                    <td> <input type="text" id="remainTime" value="1" />秒
+                    </td>
+                </tr>
+                <tr>
+                    <td>停留时间</td>
+                    <td> <input type="text" id="stayTime" value="1" />秒
+                    </td>
+                </tr>
+                <tr>
+                    <td>得分情况</td>
+                    <td>
+                        <span id="score">0</span>分
+                    </td>
+                </tr>
+                <tr>
+                    <td> <input type="button" value="开始游戏" onclick="StartGame()" /></td>
+                    <td> <!-- disabled 按钮不能用 -->
+                        <input type="button" value="结束游戏" disabled />
+                    </td>
+                </tr>
+            </table>
+        </div>
+        <div id="show">
+            <!-- table>tr*5>td*5>img[src="img/00.jpg"][width="64px"]
+                    [height="64px"] -->
+            <table>
+                <tr>
+                    <td><img src="img/00.jpg" alt="" width="64px" height="64px">
+                    </td>
+                    <td><img src="img/00.jpg" alt="" width="64px" height="64px">
+                    </td>
+                    <td><img src="img/00.jpg" alt="" width="64px" height="64px">
+                    </td>
+                    <td><img src="img/00.jpg" alt="" width="64px" height="64px">
+                    </td>
+                    <td><img src="img/00.jpg" alt="" width="64px" height="64px">
+                    </td>
+                </tr>
+                <tr>
+                    <td><img src="img/00.jpg" alt="" width="64px" height="64px">
+                    </td>
+                    <td><img src="img/00.jpg" alt="" width="64px" height="64px">
+                    </td>
+                    <td><img src="img/00.jpg" alt="" width="64px" height="64px">
+                    </td>
+                    <td><img src="img/00.jpg" alt="" width="64px" height="64px">
+                    </td>
+                    <td><img src="img/00.jpg" alt="" width="64px" height="64px">
+                    </td>
+                </tr>
+                <tr>
+                    <td><img src="img/00.jpg" alt="" width="64px" height="64px">
+                    </td>
+                    <td><img src="img/00.jpg" alt="" width="64px" height="64px">
+                    </td>
+                    <td><img src="img/00.jpg" alt="" width="64px" height="64px">
+                    </td>
+                    <td><img src="img/00.jpg" alt="" width="64px" height="64px">
+                    </td>
+                    <td><img src="img/00.jpg" alt="" width="64px" height="64px">
+                    </td>
+                </tr>
+                <tr>
+                    <td><img src="img/00.jpg" alt="" width="64px" height="64px">
+                    </td>
+                    <td><img src="img/00.jpg" alt="" width="64px" height="64px">
+                    </td>
+                    <td><img src="img/00.jpg" alt="" width="64px" height="64px">
+                    </td>
+                    <td><img src="img/00.jpg" alt="" width="64px" height="64px">
+                    </td>
+                    <td><img src="img/00.jpg" alt="" width="64px" height="64px">
+                    </td>
+                </tr>
+                <tr>
+                    <td><img src="img/00.jpg" alt="" width="64px" height="64px">
+                    </td>
+                    <td><img src="img/00.jpg" alt="" width="64px" height="64px">
+                    </td>
+                    <td><img src="img/00.jpg" alt="" width="64px" height="64px">
+                    </td>
+                    <td><img src="img/00.jpg" alt="" width="64px" height="64px">
+                    </td>
+                    <td><img src="img/00.jpg" alt="" width="64px" height="64px">
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div>
+    <script type="text/javascript">
+        var startTime;
+        var gameTime = 60;
+
+        function TimeOut() {
+            gameTime = document.getElementById("gameTime").value * 60;
+            timeOut = gameTime;
+            document.getElementById("timeOut").innerHTML = gameTime;
+        }
+
+        function StartGame() {
+            document.getElementById("score").innerHTML = 0;
+            stayTime = document.getElementById("stayTime").value;
+            remainTime = document.getElementById("remainTime").value;
+            startTime = new Date(); // 游戏开始时间 16:09:12
+            CheckTime(); // 倒计时
+            // 步骤2.1 调用"显示老鼠"的方法
+            ShowMouse(); // 显示老鼠
+        }
+
+        // 步骤2.2 显示老鼠
+        function ShowMouse() {
+            // 1. 生成0~24的随机整数
+            var i = Math.floor(Math.random() * 25);
+            // 2. 修改图片的src
+            // document.images 文档中所有图片所组成的数组
+            document.images[i].src = "img/01.jpg";
+            document.images[i].setAttribute("onclick","Score(" + i + ")")
+            // 步骤3.2 1秒后隐藏老鼠
+            HideMouse = setTimeout("HideMouse1(" + i + ")", stayTime*1000);
+        }
+
+        // 步骤3.1 隐藏老鼠
+        function HideMouse1(i) {
+            document.images[i].removeAttribute("onclick");
+            document.images[i].src = "img/00.jpg";
+            // 3. 等待1秒种后再次执行showMouse
+            setTimeout("ShowMouse()", remainTime*1000);
+        }
+
+        //击中得分
+        function Score(i) {
+            clearTimeout(HideMouse);
+            document.images[i].src = "img/02.jpg";
+            document.images[i].removeAttribute("onclick")
+            document.getElementById("score").innerHTML = parseInt(document.getElementById("score").innerHTML)+10;
+            setTimeout("HideMouse1(" + i + ")", 500);
+        }
+
+        // 倒计时
+        function CheckTime() {
+            var currTime = new Date(); // 当前游戏时间 16:09:14
+            var n = Math.floor((currTime - startTime)); // currTime和startTime相差的秒数
+            console.log(n);
+            gameTime -- ;
+            document.getElementById("timeOut").innerHTML = gameTime; // 显示倒计时结果 60 秒后显示游戏
+            setTimeout("CheckTime()", 1000);
+        }
+        
+    </script>
+</body>
+
+</html>

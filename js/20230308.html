@@ -1,0 +1,52 @@
+<!--
+ * @Descripttion: 
+ * @version: 
+ * @@Company: DCIT-SH
+ * @Author: 宸
+ * @Date: 2023-03-08 19:18:08
+ * @LastEditors: 宸
+ * @LastEditTime: 2023-03-09 15:15:10
+-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script type="text/javascript" src="js/jquery-3.4.1/jquery-3.4.1.min.js"></script>
+    <script type="text/javascript">
+        // $(document.body).css("backgrounf","black");
+        function changeA(){
+            $("#a").css("background","black");
+        }
+        function changeB(){
+            $("div").css("background","green");
+        }
+        function changeC(){
+            $(".a").css("background","red");
+        }
+    </script>
+    <style type="text/css">
+        div{
+            width: 300px;
+            height: 300px;
+            border-style: solid;
+            border-color: black;
+        }
+        .a{
+            background-color: aqua;
+        }
+    </style>
+</head>
+<body>
+    <button onclick="changeA()">改变一</button>
+    <button onclick="changeB()">改变二</button>
+    <button onclick="changeC()">变化三</button>
+    <div id="a">
+        DIV0
+    </div>
+    <div class="a">DIV1</div>
+    <div>DIV2</div>
+</body>
+</html>

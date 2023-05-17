@@ -1,0 +1,74 @@
+1.什么是JDBC?
+JDBC是Java DataBase Connection，java数据库连接
+2.JDBC的3大对象分别是什么？
+java.sql包下的3个对象
+
+Connection对象：连接对象，负责数据库的连接。
+
+Statement对象：语句对象，就是我们执行的增删改查的SQL语句。
+
+ResultSet对象：结果集合对象，保存执行查询语句得到的查询结果
+
+3.什么是JDBC驱动？
+JDBC驱动可以看作java和数据库之间的中介，写好的访问数据库的java代码通过JDBC驱动访问数据库。
+
+4.翻译中文到英文
+
+连接 Connection
+语句 Statement
+结果集合 ResultSet
+查询 select
+添加 insert
+删除 delete
+更新 update
+
+5.下面的代码有问题吗？
+inset into 表名 values......     	inselt into 表名 values...... 
+updata ...set ......where.......	update ...set ......where.......
+delect form 表名 where .....	delete form 表名 where .....
+delete*from 表名 where.....	delete from 表名 where.....
+selcet*from 表名 where......	select*from 表名 where......
+
+查询的步骤：
+Class.forName("com.mysql.cj.jdbc.Driver");     ----->1. 加载驱动主类
+
+Connection conn = DriverManager.getConnection(             ------>2. 获得数据库的连接
+	"jdbc:mysql://127.0.0.1:3306/数据库名?useUnicode=true&characterEncoding=utf8&serverTimezone=Asia/Shanghai",
+     	"用户名","密码");
+
+PreparedStatement stmt = conn.prepareStatement("select * from emp where ename = ?");    -------> 3.准备好select语句
+
+stmt.setString(1,"经理");    -------> 4.给？赋值
+
+
+ResultSet rs = stmt.executeQuery();                                                  -------> 5.执行SQL语句
+
+while(rs.next()){                                                                                 -------> 6.遍历结果集
+	String empno = rs.getString("empno");	
+	String ename = rs.getString("ename");
+	System.out.println(empno+"   "+ename);
+}
+
+rs.close();                                                                                           -------> 7.关闭
+stmt.close();
+conn.close();
+
+
+增删改步骤：
+Class.forName("com.mysql.cj.jdbc.Driver");     ----->1. 加载驱动主类
+
+Connection conn = DriverManager.getConnection(             ------>2. 获得数据库的连接
+	"jdbc:mysql://127.0.0.1:3306/数据库名?useUnicode=true&characterEncoding=utf8&serverTimezone=Asia/Shanghai",
+     	"用户名","密码");
+
+PreparedStatement stmt = conn.prepareStatement("insert into dept(deptno,dname,loc) values(?,?,?)");    -------> 3.准备好insert语句
+
+stmt.setString(1,"22");    -------> 4.给？赋值
+stmt.setString(2,"xx部门");
+stmt.setString(3,"xx地址");
+
+int n = stmt.executeUpdate();                                                  -------> 5.执行SQL语句，返回添加行数
+                                                                                   
+stmt.close();                                                                             -------> 7.关闭
+conn.close();
+

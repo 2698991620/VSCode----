@@ -1,5 +1,148 @@
+// {
+//     "files.associations": {
+//         "c++笔记黑马": "cpp"
+//     },
+//     "java.project.referencedLibraries": {
+//         "include": [
+//             "lib/**/*.jar",
+//             "Java/java/lib/mysql-connector-java-8.0.18.jar"
+//         ],
+//         "exclude": [
+//             "Java/java/lib/mysql-connector-java-5.1.18-bin.jar"
+//         ]
+//     }
+// },
 {
-    "files.associations": {
-        "c++笔记黑马": "cpp"
-    }
+    "editor.fontSize": 16,
+    "liveServer.settings.donotVerifyTags": true,
+    "liveServer.settings.donotShowInfoMsg": true, 
+    "explorer.confirmDelete": false,
+    "explorer.confirmDragAndDrop": false,
+    "security.workspace.trust.untrustedFiles": "open",
+    "liveServer.settings.CustomBrowser": "chrome",
+    "javascript.updateImportsOnFileMove.enabled": "always",
+    "emmet.triggerExpansionOnTab": true,
+    "redhat.telemetry.enabled": true,
+    // Maven的相关配置信息
+    "java.configuration.maven.globalSettings": "D:/Maven/apache-maven-3.9.0/conf/settings.xml",
+    "java.maven.downloadSources": true,
+    "java.configuration.maven.userSettings": "D:/Maven/apache-maven-3.9.0/conf/settings.xml",
+    "maven.executable.path": "D:/Maven/apache-maven-3.9.0/bin/mvn.cmd",
+    "maven.settingsFile": "D:/Maven/apache-maven-3.9.0/conf/settings.xml",
+    "maven.executable.options": "-DarchetypeCatalog=internal",
+
+
+    // Java相关配置信息
+    // "java.configuration.runtimes": [
+    //     {
+    //       "name": "JavaSE-1.8",
+    //       "path": "C:/Program Files/Java/jre1.8.0_341",
+    //       "default": true
+    //     }
+    //   ],
+
+
+      "rsp-ui.enableStartServerOnActivation": [
+        {
+          "id": "redhat.vscode-community-server-connector",
+          "name": "Community Server Connector",
+          "startOnActivation": true
+        }
+      ],
+
+
+      //"java.jdt.ls.java.home": "C:/Program Files/Java/jre1.8.0_341", 
+
+
+      "files.associations": {
+                "c++笔记黑马": "cpp"
+            },
+            "java.project.referencedLibraries": {
+                "include": [
+                    "lib/**/*.jar",
+                    "Java/java/lib/mysql-connector-java-8.0.18.jar"
+                ],
+                "exclude": [
+                    "Java/java/lib/mysql-connector-java-5.1.18-bin.jar"
+                ]
+            },
+
+
+            "java.jdt.ls.java.home": "D:/Java/jdk-18.0.1.1",
+            "java.configuration.runtimes": [
+                {
+                    "name": "JavaSE-1.8",
+                    "path": "D:/Java/jdk-18.0.1.1",
+                    "default": true
+                  }
+              ],
+            //maven、gradle的配置文件变更后自动更新
+            "java.configuration.updateBuildConfiguration": "automatic",
+            //java源文件路径
+            "java.project.sourcePaths": [
+                "src/main/java",
+                "src/test/java",
+            ],
+            //关闭自动编译
+            "java.autobuild.enabled": false,
+            //关闭debug前强制编译
+            "java.debug.settings.forceBuildBeforeLaunch": false,
+            //在项目根目录下生成.classpath等配置文件
+            "java.import.generatesMetadataFilesAtProjectRoot": true,
+            //<!--配置maven, 换成maven安装目录下的相关配置 -->
+            //"maven.executable.path": "D:/maven/apache-maven-3.6.3/bin/mvn.cmd",
+            //"java.configuration.maven.userSettings": "D:/maven/apache-maven-3.6.3/conf/settings.xml",
+            "maven.terminal.customEnv": [
+                {
+                    "environmentVariable": "JAVA_HOME",      
+                    //<!--jdk安装根目录-->
+                    "value": "D:/Java/jdk-18.0.1.1"
+                }
+            ],
+            //使用Deploy插件来进行热部署时所需要的配置信息
+            "deploy": {
+                "packages": [
+                    {
+                        "name": "前端",
+                        "description": "webapp里面的所有文件",
+                        "files": [
+                            "src/main/webapp/*",
+                            "src/main/webapp/*/*",
+                            "src/main/webapp/*.*",
+                            "src/main/webapp/*/*.*",
+                            "src/main/webapp/*/*/*.*",
+                            "src/main/webapp/*/*/*/*.*",
+                            "src/main/webapp/*/*/*/*/*.*",
+                            "src/main/webapp/*/*/*/*/*",
+                            "src/main/webapp/*/*/*/*/*/*.*",
+                        ],
+                        "exclude": [
+                            "src/main/webapp/test/*"
+                        ],
+                        "deployOnSave": true,
+                        "useTargetList": true,
+                        "button": {
+                            "text": "热部署",
+                            "tooltip": "点击这里将前端部署到hotsite",
+                            "targets": [ "HOTSITE" ]
+                        },
+                    }
+                ],
+                "targets": [
+                    {
+                        "type": "local",
+                        "name": "HOTSITE",
+                        "description": "A local folder",
+                        "dir": "target/SDDZYY/",
+                        "mappings": [
+                            {
+                                "source": "src/main/webapp",
+                                "isRegEx": false,
+                                "target": "/"
+                            }
+                        ]
+                    }
+                ]
+            },
+            "vue.features.codeActions.enable": false
 }
